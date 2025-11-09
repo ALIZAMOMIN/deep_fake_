@@ -16,8 +16,6 @@ def build_feature_extractor():
 
 
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
-feature_extractor = build_feature_extractor().to(device)
 print('feature extractor model loaded')
 # Get the proper preprocessing config for normalization
 #config = resolve_data_config({}, model=feature_extractor)
