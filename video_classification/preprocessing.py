@@ -22,9 +22,8 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 feature_extractor = build_feature_extractor().to(DEVICE)
 
-actor = build_feature_extractor().to(DEVICE)
 config = resolve_data_config({}, model=feature_extractor)
-print(config)
+
 timm_transform = create_transform(**config)
 
 # FACE DETECTION + CROPPING
@@ -47,6 +46,7 @@ def detect_and_crop_face(frame, target_size=(IMG_SIZE, IMG_SIZE)):
         min_dim = min(h, w)
         start_x, start_y = (w - min_dim)//2, (h - min_dim)//2
         cropped = frame[start_y:start_y+min_dim, start_x:start_x+min_dim]
+    print('face crop done')
     return cv2.resize(cropped, target_size)
 
 
@@ -65,6 +65,7 @@ def frame_constructor(video_path, max_frames=MAX_SEQ_LENGTH):
             break
         if i % stride == 0:
             frame = detect_and_crop_face(frame)
+
             frames.append(frame[:, :, ::-1])
             count += 1
             if count >= max_frames:
@@ -74,19 +75,27 @@ def frame_constructor(video_path, max_frames=MAX_SEQ_LENGTH):
 
 def normalize_frame(frame):
     img = Image.fromarray(frame)
+    print('normalization done')
     return timm_transform(img).unsqueeze(0)
 
 def extract_video_features(video_path, feature_extractor, max_seq_len=MAX_SEQ_LENGTH):
     frames = frame_constructor(video_path)
+    print('frame construction done')
     if frames.size == 0:
         return torch.zeros((max_seq_len, NUM_FEATURES)), torch.zeros(max_seq_len, dtype=torch.bool)
     features = torch.zeros((max_seq_len, NUM_FEATURES))
     mask = torch.zeros(max_seq_len, dtype=torch.bool)
     for i in range(min(max_seq_len, len(frames))):
         frame_tensor = normalize_frame(frames[i]).to(DEVICE)
+        #print('normalization done')
         with torch.no_grad():
             feat = feature_extractor(frame_tensor)
         features[i] = feat.squeeze(0).cpu()
         mask[i] = True
     return features, mask
 
+if __name__=='__main__':
+    print('starting preprocessing')
+    path=r'C:\Users\Aliza Momin\Desktop\New_folder\alia_deepfake.mp4'
+    features, mask = extract_video_features(path, feature_extractor)
+    print(features, mask)
