@@ -41,6 +41,8 @@ model =model = LSTMSequenceModel(num_features=NUM_FEATURES, max_seq_length=MAX_S
 model.load_state_dict(torch.load(r"C:\Users\Aliza Momin\Desktop\New_folder\deep_fake_initalstage\video_classification\model.pth", map_location=DEVICE))
 model.to(DEVICE)
 test_video = r'C:\Users\Aliza Momin\Desktop\New_folder\alia_deepfake.mp4'
+
+
 feature_extractor = build_feature_extractor().to(DEVICE)
 config = resolve_data_config({}, model=feature_extractor)
 timm_transform = create_transform(**config)
