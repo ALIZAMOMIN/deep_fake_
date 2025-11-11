@@ -21,9 +21,7 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 feature_extractor = build_feature_extractor().to(DEVICE)
-
 config = resolve_data_config({}, model=feature_extractor)
-
 timm_transform = create_transform(**config)
 
 # FACE DETECTION + CROPPING
