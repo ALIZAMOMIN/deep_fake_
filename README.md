@@ -18,3 +18,7 @@ The final fully connected layers classify each video as FAKE or REAL, handling v
 
 confusion matrix:<br>
 ![confusion_matrix](confusion_matrix.png)
+
+
+Note: This project is a prototype for research and learning purposes only. 
+It is not ready for real-world deployment or production use, and results may vary on unseen or complex datasets.
