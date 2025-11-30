@@ -1,10 +1,7 @@
-This project focuses on detecting deepfake media across 3 modalities:
-Deepfake Images
-Deepfake Audio
-Deepfake Videos
-The goal is to build ML models capable of classifying whether the input is REAL or FAKE with high accuracy. 
-A combination of Computer Vision, Speech Processing, and Deep Learning techniques is used.
+This project focuses on detecting deepfake media mainly videos:
 
+The goal is to build ML models capable of classifying whether the input is REAL or FAKE with high accuracy. 
+A combination of Computer Vision, and Deep Learning techniques is used.
 
 Language: Python
 
